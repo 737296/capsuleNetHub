@@ -1,0 +1,4 @@
+# 项目排除路径
+/cnh.common/target/
+/cnh.hub.service/target/
+/cnh.portal/target/

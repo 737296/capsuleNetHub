@@ -25,11 +25,14 @@ import java.util.HashMap;
 @Slf4j
 @CrossOrigin(origins = "*")
 public class portalController {
+    //eureka注册中心名称 转发地址
     public static final String hubService_URL = "http://hubService";
-    //    public static final String hubService_URL = "http://localhost:8002";
+    //本地转发地址
+//    public static final String hubService_URL = "http://localhost:8002";
     @Autowired
     private RestTemplate restTemplate;
 
+    //调试demo
     @GetMapping("/123")
     public CommonResult queryById() {
         log.info("8080请求");
@@ -38,17 +41,7 @@ public class portalController {
 
     }
 
-
-    @PostMapping("/api/upload")
-    @CrossOrigin(origins = "*")
-    public CommonResult insertDbMsPhoto(@RequestParam("photos") MultipartFile photos) {
-        LinkedMultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
-        MultiValueMap map = new LinkedMultiValueMap();
-        map.add("photos", photos.getResource());
-        log.info("potral被调用8080");
-        return restTemplate.postForObject(hubService_URL + "/api/upload", map, CommonResult.class);
-    }
-
+    //登录
     @PostMapping("/api/login")
     public CommonResult login(@RequestBody UserDto userDto) {
         try {
@@ -59,5 +52,17 @@ public class portalController {
         }
 
     }
+
+    //图片检测
+    @PostMapping("/api/upload")
+    @CrossOrigin(origins = "*")
+    public CommonResult insertDbMsPhoto(@RequestParam("photos") MultipartFile photos) {
+        LinkedMultiValueMap<String, Object> params = new LinkedMultiValueMap<>();
+        MultiValueMap map = new LinkedMultiValueMap();
+        map.add("photos", photos.getResource());
+        log.info("potral被调用8080");
+        return restTemplate.postForObject(hubService_URL + "/api/upload", map, CommonResult.class);
+    }
+
 
 }

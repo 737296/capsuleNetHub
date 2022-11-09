@@ -40,6 +40,23 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
         return new CommonResult(200, "查询成功");
 
     }
+    @PostMapping("/api/login")
+    public CommonResult login(@RequestBody UserDto userDto) {
+        try {
+            log.info("name:" + userDto.getName());
+            log.info("name:" + userDto.getPassword());
+            if (userDto.getName().equals("123") && userDto.getPassword().equals("123")) {
+                return new CommonResult(200, "登录成功", userDto);
+
+            } else {
+                return new CommonResult(201, "登陆失败", userDto);
+            }
+        } catch (Exception e) {
+            log.info("登录异常：" + e);
+            return new CommonResult(202, "异常", e);
+        }
+
+    }
 
     @PostMapping("/api/upload")
     //允许跨域
@@ -107,21 +124,5 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
         log.info("Hub被调用8002");
         return restTemplate.postForObject(flaskCapsule_URL + "/api/upload", map, CommonResult.class);
     }
-    @PostMapping("/api/login")
-    public CommonResult login(@RequestBody UserDto userDto) {
-        try {
-            log.info("name:" + userDto.getName());
-            log.info("name:" + userDto.getPassword());
-            if (userDto.getName().equals("123") && userDto.getPassword().equals("123")) {
-                return new CommonResult(200, "登录成功", userDto);
 
-            } else {
-                return new CommonResult(201, "登陆失败", userDto);
-            }
-        } catch (Exception e) {
-            log.info("登录异常：" + e);
-            return new CommonResult(202, "异常", e);
-        }
-
-    }
 }
