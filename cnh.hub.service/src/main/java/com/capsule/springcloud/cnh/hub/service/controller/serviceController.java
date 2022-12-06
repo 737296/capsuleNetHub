@@ -2,6 +2,9 @@ package com.capsule.springcloud.cnh.hub.service.controller;
 
 import com.capsule.springcloud.cnh.common.CommonResult;
 import com.capsule.springcloud.cnh.dto.UserDto;
+import com.capsule.springcloud.cnh.hub.service.mapper.UserMapper;
+import com.capsule.springcloud.cnh.hub.service.pojo.User;
+import com.capsule.springcloud.cnh.hub.service.pojo.UserExample;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.text.SimpleDateFormat;
@@ -32,6 +36,9 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
     @Autowired
 
     private RestTemplate restTemplate;
+    @Resource
+
+    private UserMapper userMapper;
 
     @GetMapping("/123")
 
@@ -43,14 +50,23 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
     @PostMapping("/api/login")
     public CommonResult login(@RequestBody UserDto userDto) {
         try {
-            log.info("name:" + userDto.getName());
-            log.info("name:" + userDto.getPassword());
-            if (userDto.getName().equals("123") && userDto.getPassword().equals("123")) {
+//            log.info("name:" + userDto.getName());
+//            log.info("name:" + userDto.getPassword());
+//            if (userDto.getName().equals("123") && userDto.getPassword().equals("123")) {
+//                return new CommonResult(200, "登录成功", userDto);
+//            } else {
+//                return new CommonResult(201, "登陆失败", userDto);
+//            }
+            User user=new User();
+            user.setName(userDto.getName());
+            user.setPassword(userDto.getPassword());
+            User user1=userMapper.login(user);
+            if(user1==null){
+                return new CommonResult(201, "登陆失败：账户密码错误", userDto);
+            }else{
                 return new CommonResult(200, "登录成功", userDto);
-
-            } else {
-                return new CommonResult(201, "登陆失败", userDto);
             }
+
         } catch (Exception e) {
             log.info("登录异常：" + e);
             return new CommonResult(202, "异常", e);

@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.capsule.springcloud.cnh.hub.service.mapper.TrainAccuracyMapper" >
+  <resultMap id="BaseResultMap" type="com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracy" >
+    <result column="id" property="id" jdbcType="VARCHAR" />
+    <result column="train_history_id" property="trainHistoryId" jdbcType="VARCHAR" />
+    <result column="epoch" property="epoch" jdbcType="VARCHAR" />
+    <result column="accuracy" property="accuracy" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    id, train_history_id, epoch, accuracy
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracyExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from train_accuracy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <delete id="deleteByExample" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracyExample" >
+    delete from train_accuracy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracy" >
+    insert into train_accuracy (id, train_history_id, epoch, 
+      accuracy)
+    values (#{id,jdbcType=VARCHAR}, #{trainHistoryId,jdbcType=VARCHAR}, #{epoch,jdbcType=VARCHAR}, 
+      #{accuracy,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracy" >
+    insert into train_accuracy
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="trainHistoryId != null" >
+        train_history_id,
+      </if>
+      <if test="epoch != null" >
+        epoch,
+      </if>
+      <if test="accuracy != null" >
+        accuracy,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=VARCHAR},
+      </if>
+      <if test="trainHistoryId != null" >
+        #{trainHistoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="epoch != null" >
+        #{epoch,jdbcType=VARCHAR},
+      </if>
+      <if test="accuracy != null" >
+        #{accuracy,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracyExample" resultType="java.lang.Integer" >
+    select count(*) from train_accuracy
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update train_accuracy
+    <set >
+      <if test="record.id != null" >
+        id = #{record.id,jdbcType=VARCHAR},
+      </if>
+      <if test="record.trainHistoryId != null" >
+        train_history_id = #{record.trainHistoryId,jdbcType=VARCHAR},
+      </if>
+      <if test="record.epoch != null" >
+        epoch = #{record.epoch,jdbcType=VARCHAR},
+      </if>
+      <if test="record.accuracy != null" >
+        accuracy = #{record.accuracy,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update train_accuracy
+    set id = #{record.id,jdbcType=VARCHAR},
+      train_history_id = #{record.trainHistoryId,jdbcType=VARCHAR},
+      epoch = #{record.epoch,jdbcType=VARCHAR},
+      accuracy = #{record.accuracy,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+</mapper>
