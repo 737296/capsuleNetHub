@@ -82,6 +82,13 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectByTrainHistoryId" resultMap="BaseResultMap" parameterType="java.lang.String">
+    select *
+    from train_accuracy
+    where train_history_id = #{trainHistoryId,jdbcType=VARCHAR}
+    order by epoch
+
+  </select>
   <delete id="deleteByExample" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracyExample" >
     delete from train_accuracy
     <if test="_parameter != null" >
@@ -89,9 +96,9 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracy" >
-    insert into train_accuracy (id, train_history_id, epoch, 
+    insert into train_accuracy (id, train_history_id, epoch,
       accuracy)
-    values (#{id,jdbcType=VARCHAR}, #{trainHistoryId,jdbcType=VARCHAR}, #{epoch,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{trainHistoryId,jdbcType=VARCHAR}, #{epoch,jdbcType=VARCHAR},
       #{accuracy,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracy" >

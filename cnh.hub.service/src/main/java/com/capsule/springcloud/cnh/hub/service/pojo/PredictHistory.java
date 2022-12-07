@@ -19,6 +19,16 @@ public class PredictHistory {
 
     private String trainModelId;
 
+    private String trainModelName;
+
+    public String getTrainModelName() {
+        return trainModelName;
+    }
+
+    public void setTrainModelName(String trainModelName) {
+        this.trainModelName = trainModelName == null ? null : trainModelName.trim();;
+    }
+
     public String getId() {
         return id;
     }

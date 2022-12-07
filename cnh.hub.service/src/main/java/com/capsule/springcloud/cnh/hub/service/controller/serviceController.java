@@ -2,9 +2,11 @@ package com.capsule.springcloud.cnh.hub.service.controller;
 
 import com.capsule.springcloud.cnh.common.CommonResult;
 import com.capsule.springcloud.cnh.dto.UserDto;
+import com.capsule.springcloud.cnh.hub.service.mapper.PredictHistoryMapper;
+import com.capsule.springcloud.cnh.hub.service.mapper.TrainAccuracyMapper;
+import com.capsule.springcloud.cnh.hub.service.mapper.TrainHistoryMapper;
 import com.capsule.springcloud.cnh.hub.service.mapper.UserMapper;
-import com.capsule.springcloud.cnh.hub.service.pojo.User;
-import com.capsule.springcloud.cnh.hub.service.pojo.UserExample;
+import com.capsule.springcloud.cnh.hub.service.pojo.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
@@ -19,7 +21,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @Author bolin
@@ -37,8 +41,13 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
 
     private RestTemplate restTemplate;
     @Resource
-
     private UserMapper userMapper;
+    @Resource
+    private TrainHistoryMapper trainHistoryMapper;
+    @Resource
+    private TrainAccuracyMapper trainAccuracyMapper;
+    @Resource
+    private PredictHistoryMapper predictHistoryMapper;
 
     @GetMapping("/123")
 
@@ -141,4 +150,37 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
         return restTemplate.postForObject(flaskCapsule_URL + "/api/upload", map, CommonResult.class);
     }
 
+    @GetMapping("/api/querytrainhistory")
+    public CommonResult queryTrainHistory(){
+        try {
+            List<TrainHistory> trainHistoryList;
+            trainHistoryList=trainHistoryMapper.selectAllTrainHistory();
+            return new CommonResult(200, "查询训练历史成功", trainHistoryList);
+        }catch (Exception e){
+            log.info("查询训练历史异常：" + e);
+            return new CommonResult(202, "异常", e);
+        }
+    }
+    @PostMapping("/api/querytrainaccuracy")
+    public CommonResult queryTrainAccuracy(@RequestBody HashMap<String, String> map){
+        try {
+            List<TrainAccuracy> trainAccuracyList;
+            trainAccuracyList=trainAccuracyMapper.selectByTrainHistoryId(map.get("trainHistoryId"));
+
+            return new CommonResult(200, "查询训练准确度历史成功", trainAccuracyList);
+        }catch (Exception e){
+            log.info("查询训练准确度历史异常：" + e);
+            return new CommonResult(202, "异常", e);
+        }
+    }
+    @PostMapping()
+    public CommonResult queryPredictHistory(){
+        try{
+            List<PredictHistory> predictHistoryList=predictHistoryMapper.selectAll();
+            return new CommonResult(200, "查询预测历史成功", predictHistoryList);
+        }catch (Exception e){
+            log.info("查询预测历史异常：" + e);
+            return new CommonResult(202, "异常", e);
+        }
+    }
 }

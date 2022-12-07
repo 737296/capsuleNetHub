@@ -2,10 +2,13 @@ package com.capsule.springcloud.cnh.hub.service.mapper;
 
 import com.capsule.springcloud.cnh.hub.service.pojo.TrainHistory;
 import com.capsule.springcloud.cnh.hub.service.pojo.TrainHistoryExample;
+import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Mapper
+@Repository(value = "TrainHistoryMapper")
 public interface TrainHistoryMapper {
     int countByExample(TrainHistoryExample example);
 
@@ -18,6 +21,8 @@ public interface TrainHistoryMapper {
     int insertSelective(TrainHistory record);
 
     List<TrainHistory> selectByExample(TrainHistoryExample example);
+
+    List<TrainHistory> selectAllTrainHistory();
 
     TrainHistory selectByPrimaryKey(String id);
 

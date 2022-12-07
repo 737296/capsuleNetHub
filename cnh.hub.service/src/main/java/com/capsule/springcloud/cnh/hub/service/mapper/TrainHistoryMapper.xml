@@ -86,8 +86,13 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectAllTrainHistory" resultMap="BaseResultMap">
+    select *
+    from train_history
+
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from train_history
     where id = #{id,jdbcType=VARCHAR}
@@ -103,11 +108,11 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainHistory" >
-    insert into train_history (id, user_id, user_name, 
-      train_epochs, train_time, start_time, 
+    insert into train_history (id, user_id, user_name,
+      train_epochs, train_time, start_time,
       train_model_name, train_model_id)
-    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
-      #{trainEpochs,jdbcType=VARCHAR}, #{trainTime,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
+      #{trainEpochs,jdbcType=VARCHAR}, #{trainTime,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR},
       #{trainModelName,jdbcType=VARCHAR}, #{trainModelId,jdbcType=VARCHAR})
   </insert>
   <insert id="insertSelective" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.TrainHistory" >

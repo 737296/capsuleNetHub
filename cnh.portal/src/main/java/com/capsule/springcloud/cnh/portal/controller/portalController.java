@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import java.io.*;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -63,6 +64,37 @@ public class portalController {
         log.info("potral被调用8080");
         return restTemplate.postForObject(hubService_URL + "/api/upload", map, CommonResult.class);
     }
-
+    //查询训练历史
+    @GetMapping("/api/querytrainhistory")
+    @CrossOrigin(origins = "*")
+    public CommonResult queryTrainHistory(){
+        try{
+            return restTemplate.getForObject(hubService_URL + "/api/querytrainhistory",CommonResult.class);
+        }catch (Exception e){
+            log.info("查询训练历史异常：" + e);
+            return new CommonResult(202, "异常", e);
+        }
+    }
+    //查询训练准确度
+    @PostMapping("/api/querytrainaccuracy")
+    @CrossOrigin(origins = "*")
+    public CommonResult queryTrainAccuracy(@RequestBody HashMap<String, String> map){
+        try{
+            return restTemplate.postForObject(hubService_URL + "/api/querytrainaccuracy",map, CommonResult.class);
+        }catch (Exception e){
+            log.info("查询训练准确度：" + e);
+            return new CommonResult(202, "异常", e);
+        }
+    }
+    //查询预测历史
+    @PostMapping("/api/querypredicthistory")
+    public CommonResult queryPredictHistory(@RequestBody HashMap<String, String> map){
+        try{
+            return restTemplate.postForObject(hubService_URL+"/api/querypredicthistory",map,CommonResult.class);
+        }catch (Exception e){
+            log.info("查询预测历史：" + e);
+            return new CommonResult(202, "异常", e);
+        }
+    }
 
 }

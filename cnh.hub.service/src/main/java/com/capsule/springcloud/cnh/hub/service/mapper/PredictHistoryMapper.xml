@@ -11,6 +11,7 @@
     <result column="image" property="image" jdbcType="VARCHAR" />
     <result column="start_time" property="startTime" jdbcType="VARCHAR" />
     <result column="train_model_id" property="trainModelId" jdbcType="VARCHAR" />
+    <result column="train_model_name" property="trainModelName" jdbcType="VARCHAR" />
   </resultMap>
   <sql id="Example_Where_Clause" >
     <where >
@@ -71,7 +72,7 @@
     </where>
   </sql>
   <sql id="Base_Column_List" >
-    id, user_id, image_name, predict_reslut, predict_time, user_name, image, start_time, 
+    id, user_id, image_name, predict_reslut, predict_time, user_name, image, start_time,
     train_model_id
   </sql>
   <select id="selectByExample" resultMap="BaseResultMap" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.PredictHistoryExample" >
@@ -88,8 +89,13 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    SELECT ph.*,tm.train_model_name
+    FROM predict_history ph,train_model tm
+    WHERE ph.train_model_id=tm.id
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from predict_history
     where id = #{id,jdbcType=VARCHAR}
@@ -105,12 +111,12 @@
     </if>
   </delete>
   <insert id="insert" parameterType="com.capsule.springcloud.cnh.hub.service.pojo.PredictHistory" >
-    insert into predict_history (id, user_id, image_name, 
-      predict_reslut, predict_time, user_name, 
+    insert into predict_history (id, user_id, image_name,
+      predict_reslut, predict_time, user_name,
       image, start_time, train_model_id
       )
-    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{imageName,jdbcType=VARCHAR}, 
-      #{predictReslut,jdbcType=VARCHAR}, #{predictTime,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, 
+    values (#{id,jdbcType=VARCHAR}, #{userId,jdbcType=VARCHAR}, #{imageName,jdbcType=VARCHAR},
+      #{predictReslut,jdbcType=VARCHAR}, #{predictTime,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR},
       #{image,jdbcType=VARCHAR}, #{startTime,jdbcType=VARCHAR}, #{trainModelId,jdbcType=VARCHAR}
       )
   </insert>
