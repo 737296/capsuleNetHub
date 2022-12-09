@@ -1,5 +1,6 @@
 package com.capsule.springcloud.cnh.hub.service.mapper;
 
+import com.capsule.springcloud.cnh.dto.TrainHistoryDto;
 import com.capsule.springcloud.cnh.hub.service.pojo.TrainHistory;
 import com.capsule.springcloud.cnh.hub.service.pojo.TrainHistoryExample;
 import org.apache.ibatis.annotations.Mapper;
@@ -22,7 +23,7 @@ public interface TrainHistoryMapper {
 
     List<TrainHistory> selectByExample(TrainHistoryExample example);
 
-    List<TrainHistory> selectAllTrainHistory();
+    List<TrainHistory> selectAllTrainHistory(TrainHistoryDto trainHistoryDto);
 
     TrainHistory selectByPrimaryKey(String id);
 

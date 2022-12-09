@@ -1,12 +1,15 @@
 package com.capsule.springcloud.cnh.hub.service.controller;
 
+
 import com.capsule.springcloud.cnh.common.CommonResult;
+import com.capsule.springcloud.cnh.dto.TrainAccuracyDto;
+import com.capsule.springcloud.cnh.dto.TrainHistoryDto;
 import com.capsule.springcloud.cnh.dto.UserDto;
-import com.capsule.springcloud.cnh.hub.service.mapper.PredictHistoryMapper;
-import com.capsule.springcloud.cnh.hub.service.mapper.TrainAccuracyMapper;
-import com.capsule.springcloud.cnh.hub.service.mapper.TrainHistoryMapper;
-import com.capsule.springcloud.cnh.hub.service.mapper.UserMapper;
+import com.capsule.springcloud.cnh.hub.service.mapper.*;
 import com.capsule.springcloud.cnh.hub.service.pojo.*;
+import com.capsule.springcloud.cnh.utils.PageUtil;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.FileCopyUtils;
@@ -48,6 +51,9 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
     private TrainAccuracyMapper trainAccuracyMapper;
     @Resource
     private PredictHistoryMapper predictHistoryMapper;
+
+    @Resource
+    private TrainModelMapper trainModelMapper;
 
     @GetMapping("/123")
 
@@ -150,11 +156,12 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
         return restTemplate.postForObject(flaskCapsule_URL + "/api/upload", map, CommonResult.class);
     }
 
-    @GetMapping("/api/querytrainhistory")
-    public CommonResult queryTrainHistory(){
+    @PostMapping("/api/querytrainhistory")
+    public CommonResult queryTrainHistory(@RequestBody TrainHistoryDto trainHistoryDto){
         try {
+//            Page page = PageHelper.startPage(1, 10);
             List<TrainHistory> trainHistoryList;
-            trainHistoryList=trainHistoryMapper.selectAllTrainHistory();
+            trainHistoryList=trainHistoryMapper.selectAllTrainHistory(trainHistoryDto);
             return new CommonResult(200, "查询训练历史成功", trainHistoryList);
         }catch (Exception e){
             log.info("查询训练历史异常：" + e);
@@ -162,18 +169,21 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
         }
     }
     @PostMapping("/api/querytrainaccuracy")
-    public CommonResult queryTrainAccuracy(@RequestBody HashMap<String, String> map){
+    public CommonResult queryTrainAccuracy(@RequestBody TrainAccuracyDto trainAccuracyDto){
         try {
+//            int pageNum=1;
+//            int pageSize=10;
             List<TrainAccuracy> trainAccuracyList;
-            trainAccuracyList=trainAccuracyMapper.selectByTrainHistoryId(map.get("trainHistoryId"));
-
+//            Page page = PageHelper.startPage(pageNum,pageSize);
+            trainAccuracyList=trainAccuracyMapper.selectByTrainHistoryId(trainAccuracyDto);
+//            PageUtil pageUtil=new PageUtil(page,trainAccuracyList);
             return new CommonResult(200, "查询训练准确度历史成功", trainAccuracyList);
         }catch (Exception e){
             log.info("查询训练准确度历史异常：" + e);
             return new CommonResult(202, "异常", e);
         }
     }
-    @PostMapping()
+    @PostMapping("/api/querypredicthistory")
     public CommonResult queryPredictHistory(){
         try{
             List<PredictHistory> predictHistoryList=predictHistoryMapper.selectAll();
@@ -183,4 +193,15 @@ public static final String flaskCapsule_URL = "http://localhost:5000";
             return new CommonResult(202, "异常", e);
         }
     }
+    @PostMapping("/api/querytrainmodel")
+    public CommonResult queryTrainModel(@RequestBody HashMap<String, String> map){
+        try{
+            List<TrainModel> trainModelList=trainModelMapper.selectAll();
+            return new CommonResult(200, "查询模型成功", trainModelList);
+        }catch (Exception e){
+            log.info("查询模型：" + e);
+            return new CommonResult(202, "异常", e);
+        }
+    }
+
 }

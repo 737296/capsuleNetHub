@@ -1,5 +1,7 @@
 package com.capsule.springcloud.cnh.hub.service.mapper;
 
+import com.capsule.springcloud.cnh.dto.TrainAccuracyDto;
+import com.capsule.springcloud.cnh.dto.TrainHistoryDto;
 import com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracy;
 import com.capsule.springcloud.cnh.hub.service.pojo.TrainAccuracyExample;
 import org.apache.ibatis.annotations.Mapper;
@@ -21,7 +23,7 @@ public interface TrainAccuracyMapper {
 
     List<TrainAccuracy> selectByExample(TrainAccuracyExample example);
 
-    List<TrainAccuracy> selectByTrainHistoryId(String trainHistoryId);
+    List<TrainAccuracy> selectByTrainHistoryId(TrainAccuracyDto trainAccuracyDto);
     int updateByExampleSelective(@Param("record") TrainAccuracy record, @Param("example") TrainAccuracyExample example);
 
     int updateByExample(@Param("record") TrainAccuracy record, @Param("example") TrainAccuracyExample example);

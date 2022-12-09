@@ -86,9 +86,21 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectAllTrainHistory" resultMap="BaseResultMap">
+  <select id="selectAllTrainHistory" resultMap="BaseResultMap" parameterType="com.capsule.springcloud.cnh.dto.TrainHistoryDto">
     select *
     from train_history
+    <where>
+      <if test="trainModelName != null and trainModelName != '' ">
+        and train_model_name= #{trainModelName,jdbcType=VARCHAR}
+      </if>
+      <if test="trainEpochs != null and trainEpochs != '' ">
+        and train_epochs=#{trainEpochs,jdbcType=VARCHAR}
+      </if>
+      <if test="userName != null and userName != '' ">
+        and user_name=#{userName,jdbcType=VARCHAR}
+
+      </if>
+    </where>
 
   </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >

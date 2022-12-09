@@ -81,8 +81,12 @@
       order by ${orderByClause}
     </if>
   </select>
+  <select id="selectAll" resultMap="BaseResultMap">
+    select *
+    from train_model
+  </select>
   <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.String" >
-    select 
+    select
     <include refid="Base_Column_List" />
     from train_model
     where id = #{id,jdbcType=VARCHAR}

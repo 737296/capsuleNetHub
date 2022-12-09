@@ -82,7 +82,7 @@
       order by ${orderByClause}
     </if>
   </select>
-  <select id="selectByTrainHistoryId" resultMap="BaseResultMap" parameterType="java.lang.String">
+  <select id="selectByTrainHistoryId" resultMap="BaseResultMap" parameterType="com.capsule.springcloud.cnh.dto.TrainAccuracyDto">
     select *
     from train_accuracy
     where train_history_id = #{trainHistoryId,jdbcType=VARCHAR}

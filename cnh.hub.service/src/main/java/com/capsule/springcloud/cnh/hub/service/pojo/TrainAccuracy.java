@@ -1,6 +1,8 @@
 package com.capsule.springcloud.cnh.hub.service.pojo;
 
-public class TrainAccuracy {
+import java.io.Serializable;
+
+public class TrainAccuracy implements Serializable {
     private String id;
 
     private String trainHistoryId;

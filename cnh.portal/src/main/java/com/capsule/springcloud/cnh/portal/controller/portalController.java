@@ -1,6 +1,8 @@
 package com.capsule.springcloud.cnh.portal.controller;
 
 import com.capsule.springcloud.cnh.common.CommonResult;
+import com.capsule.springcloud.cnh.dto.TrainAccuracyDto;
+import com.capsule.springcloud.cnh.dto.TrainHistoryDto;
 import com.capsule.springcloud.cnh.dto.UserDto;
 import com.capsule.springcloud.cnh.portal.dto.imageDto;
 import lombok.extern.slf4j.Slf4j;
@@ -65,11 +67,11 @@ public class portalController {
         return restTemplate.postForObject(hubService_URL + "/api/upload", map, CommonResult.class);
     }
     //查询训练历史
-    @GetMapping("/api/querytrainhistory")
+    @PostMapping("/api/querytrainhistory")
     @CrossOrigin(origins = "*")
-    public CommonResult queryTrainHistory(){
+    public CommonResult queryTrainHistory(@RequestBody TrainHistoryDto trainHistoryDto){
         try{
-            return restTemplate.getForObject(hubService_URL + "/api/querytrainhistory",CommonResult.class);
+            return restTemplate.postForObject(hubService_URL + "/api/querytrainhistory",trainHistoryDto,CommonResult.class);
         }catch (Exception e){
             log.info("查询训练历史异常：" + e);
             return new CommonResult(202, "异常", e);
@@ -78,9 +80,9 @@ public class portalController {
     //查询训练准确度
     @PostMapping("/api/querytrainaccuracy")
     @CrossOrigin(origins = "*")
-    public CommonResult queryTrainAccuracy(@RequestBody HashMap<String, String> map){
+    public CommonResult queryTrainAccuracy(@RequestBody TrainAccuracyDto trainAccuracyDto){
         try{
-            return restTemplate.postForObject(hubService_URL + "/api/querytrainaccuracy",map, CommonResult.class);
+            return restTemplate.postForObject(hubService_URL + "/api/querytrainaccuracy",trainAccuracyDto, CommonResult.class);
         }catch (Exception e){
             log.info("查询训练准确度：" + e);
             return new CommonResult(202, "异常", e);
@@ -93,6 +95,15 @@ public class portalController {
             return restTemplate.postForObject(hubService_URL+"/api/querypredicthistory",map,CommonResult.class);
         }catch (Exception e){
             log.info("查询预测历史：" + e);
+            return new CommonResult(202, "异常", e);
+        }
+    }
+    @PostMapping("/api/querytrainmodel")
+    public CommonResult queryTrainModel(@RequestBody HashMap<String, String> map){
+        try{
+            return restTemplate.postForObject(hubService_URL+"/api/querytrainmodel",map,CommonResult.class);
+        }catch (Exception e){
+            log.info("查询模型：" + e);
             return new CommonResult(202, "异常", e);
         }
     }
